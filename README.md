@@ -1,62 +1,51 @@
-# Your Project Name
+# Robot de bureau interactif (Deskmate) - Animo
 
-| | |
-|-|-|
-|`Author` | Your full name
+| Author | Ivan Eduard-Iulian |
+| :--- | :--- |
 
 ## Description
 
+Robot de bureau (Deskmate) interactif capable de modéliser des comportements émotionnels. Le système intègre l'interprétation spatiale des gestes et de la proximité de l'utilisateur en temps réel, couplée à la reconnaissance d'objets pour déclencher des scénarios d'interaction spécifiques. Le robot simule l'attention visuelle grâce à un mouvement mécanique fluide sur deux axes de rotation. L'interaction est complétée par un feedback visuel dynamique, affichant des expressions faciales animées qui reflètent son état émotionnel, et par un retour audio restituant des signaux sonores complexes ou des réactions vocales.
+
 ## Motivation
+
+L'objectif de ce projet est d'explorer l'interaction homme-machine (HMI) en créant une entité robotique qui semble "vivante". En synchronisant des mouvements mécaniques de précision avec des capteurs de proximité et une interface visuelle, le projet permet de mettre en pratique des notions techniques avancées (communication SPI/I2C, contrôle PWM) tout en concevant un gadget interactif et attachant pour le bureau.
 
 ## Architecture
 
-### Block diagram
+Le système est structuré en quatre sous-systèmes principaux : l'unité centrale de contrôle, le sous-système de mouvement, le sous-système de perception et le sous-système de feedback.
 
-<!-- Make sure the path to the picture is correct -->
-![Block Diagram](schematics/block_diagram.png)
+L'unité centrale, basée sur la carte de développement **ESP32**, coordonne l'ensemble des opérations. Grâce à son processeur dual-core, elle gère simultanément les calculs logiques, la lecture des capteurs et le contrôle des moteurs.
 
-### Schematic
+Le sous-système de mouvement utilise deux **servomoteurs SG90** montés sur un support Pan-Tilt. Contrôlés via des signaux PWM générés par l'ESP32, ils permettent au robot d'orienter sa "tête" sur deux axes (horizontal et vertical) de manière fluide.
 
-![Schematic](schematics/kicad_schematic.png)
+Le sous-système de perception repose sur un **capteur ultrasonique HC-SR04P** (alimenté en 3.3V) pour mesurer la distance des objets ou de l'utilisateur via des impulsions sonores. Il intègre également un **module RFID RC522** communicant via le bus SPI, permettant la reconnaissance de badges ou d'objets spécifiques pour déclencher des réactions ciblées.
 
-### Components
+Le sous-système de feedback comprend un **écran OLED de 0.96 pouces** communicant via le bus I2C, utilisé pour afficher les expressions faciales animées (yeux du robot). Un **buzzer passif**, contrôlé par PWM, complète l'interaction en émettant des tonalités variées selon l'état émotionnel du robot.
 
+## Block diagram
 
-<!-- This is just an example, fill in with your actual components -->
+<img width="1536" height="1024" alt="schematicsblock_diagram" src="https://github.com/user-attachments/assets/7edfe6a1-ede9-40e6-b431-691ed6f0411c" />
+
+## Components
+
 
 | Device | Usage | Price |
-|--------|--------|-------|
-| Activ Buzzer | Buzzer | [1.5 RON](https://www.optimusdigital.ro/ro/audio-buzzere/635-buzzer-activ-de-3-v.html?search_query=buzzer&results=61) |
-| Push Button | Button | [1 RON](https://www.optimusdigital.ro/ro/butoane-i-comutatoare/1119-buton-6x6x6.html?search_query=buton&results=222) |
-| Jumper Wires | Connecting components | [7 RON](https://www.optimusdigital.ro/ro/fire-fire-mufate/884-set-fire-tata-tata-40p-10-cm.html?search_query=set+fire&results=110) |
-| Breadboard | Project board | [10 RON](https://www.optimusdigital.ro/ro/prototipare-breadboard-uri/8-breadboard-830-points.html?search_query=breadboard&results=145) |
+| :--- | :--- | :--- |
+| ESP32 CH340C 30P | Microcontrôleur principal (Cerveau) | [41.19 RON](#) |
+| Servomoteur SG90 (x2) | Mouvement mécanique Pan-Tilt (axes X/Y) | [18.98 RON](#) |
+| Support Pan-Tilt | Structure mécanique articulée | [8.46 RON](#) |
+| HC-SR04P (3-5.5V) | Capteur ultrasonique pour la détection de proximité | [10.14 RON](#) |
+| Écran OLED 0.96" | Affichage I2C des expressions faciales | [16.96 RON](#) |
+| Kit RFID RC522 | Module SPI pour la lecture des cartes/badges | [9.53 RON](#) |
+| Buzzer passif | Retour audio (signaux sonores émotionnels) | [1.45 RON](#) |
+| Breadboard 400 pts | Plaque d'essai pour le prototypage initial | [6.62 RON](#) |
+| Carte PCB FR4 7x9 | Assemblage final par soudure | [5.76 RON](#) |
 
-### Libraries
-
-<!-- This is just an example, fill in the table with your actual components -->
+## Libraries
 
 | Library | Description | Usage |
-|---------|-------------|-------|
-| [lib-name1](link-to-lib) | official description of the lib | Used for accesing the peripherals of the microcontroller  |
-| [lib-name2](link-to-lib) | official description of the lib | Used for accesing the peripherals of the microcontroller  |
-
-## Log
-
-<!-- write every week your progress here -->
-
-### Week 6 - 12 May
-
-### Week 7 - 19 May
-
-### Week 20 - 26 May
-
-
-## Reference links
-
-<!-- Fill in with appropriate links and link titles -->
-
-[Tutorial 1](https://www.youtube.com/watch?v=wdgULBpRoXk&t=1s&ab_channel=BenEater)
-
-[Article 1](https://www.explainthatstuff.com/induction-motors.html)
-
-[Link title](https://projecthub.arduino.cc/)
+| :--- | :--- | :--- |
+| `ESP32Servo` | Bibliothèque optimisée pour les signaux PWM sur ESP32 | Utilisée pour contrôler précisément la position des deux servomoteurs SG90. |
+| `Adafruit_SSD1306` | Pilote pour les écrans OLED basés sur SSD1306 | Utilisée pour gérer l'affichage I2C et dessiner les expressions du visage. |
+| `MFRC522` | Bibliothèque de communication pour lecteur RFID | Utilisée pour initialiser le bus SPI et lire l'UID des cartes détectées. |
